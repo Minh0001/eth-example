@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Constants from "expo-constants";
 import Loading from "../../components/Loading";
 import Error from "../../components/Error";
@@ -6,8 +6,17 @@ import FormattedNumber from "../../components/FormattedNumber";
 import useFetch from "../../hooks/useFetch";
 import { InfuraResponseType } from "../../types/infura";
 import { BASE_API_URL } from "../../utils/contants";
+import { useEffect } from "react";
 
-const ETHHeight = (): React.ReactElement => {
+type ETHHeightProps = {
+  refresh?: boolean;
+  afterRefresh?: () => void;
+};
+
+const ETHHeight = ({
+  refresh,
+  afterRefresh = () => {},
+}: ETHHeightProps): React.ReactElement => {
   const body = {
     jsonrpc: "2.0",
     id: 1,
@@ -21,6 +30,15 @@ const ETHHeight = (): React.ReactElement => {
       body: JSON.stringify(body),
     }
   );
+
+  useEffect(() => {
+    (async () => {
+      if (refresh) {
+        await request();
+        afterRefresh();
+      }
+    })();
+  }, [refresh]);
 
   if (isLoading) return <Loading />;
 

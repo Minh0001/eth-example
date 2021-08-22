@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Constants from "expo-constants";
 import Loading from "../../components/Loading";
 import Error from "../../components/Error";
@@ -9,9 +9,15 @@ import { BASE_API_URL } from "../../utils/contants";
 
 type ETHBalanceProps = {
   address: string;
+  refresh?: boolean;
+  afterRefresh?: () => void;
 };
 
-const ETHBalance = ({ address }: ETHBalanceProps): React.ReactElement => {
+const ETHBalance = ({
+  address,
+  refresh,
+  afterRefresh = () => {},
+}: ETHBalanceProps): React.ReactElement => {
   const body = {
     jsonrpc: "2.0",
     id: 1,
@@ -25,6 +31,15 @@ const ETHBalance = ({ address }: ETHBalanceProps): React.ReactElement => {
       body: JSON.stringify(body),
     }
   );
+
+  useEffect(() => {
+    (async () => {
+      if (refresh) {
+        await request();
+        afterRefresh();
+      }
+    })();
+  }, [refresh]);
 
   if (isLoading) return <Loading />;
 
