@@ -1,20 +1,11 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import HomeScreen from './src/screens/Home';
+import React from "react";
+import { Provider as PaperProvider } from "react-native-paper";
+import HomeScreen from "./src/screens/Home";
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    <PaperProvider>
       <HomeScreen />
-    </View>
+    </PaperProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
