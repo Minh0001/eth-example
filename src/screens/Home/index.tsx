@@ -1,6 +1,14 @@
 import React from "react";
+import { Appbar } from "react-native-paper";
 import HomeScreenContainer from "../../containers/HomeScreenContainer";
 
-const HomeScreen = (): React.ReactElement => <HomeScreenContainer />;
+const HomeScreen = (): React.ReactElement => (
+  <>
+    <Appbar.Header>
+      <Appbar.Content title="ETH Test" />
+    </Appbar.Header>
+    <HomeScreenContainer />
+  </>
+);
 
 export default HomeScreen;
